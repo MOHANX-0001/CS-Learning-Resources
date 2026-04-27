@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS 365 – Advanced Java | Exam Crash Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #111118;
+    --card2: #16161f;
+    --border: #2a2a3a;
+    --accent: #ff6b35;
+    --accent2: #4ecdc4;
+    --accent3: #ffe66d;
+    --accent4: #a29bfe;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --green: #55efc4;
+    --red: #ff7675;
+    --pink: #fd79a8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a1628 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 40px 30px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,107,53,0.03) 40px, rgba(255,107,53,0.03) 41px);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 2px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 15px; font-family: 'Space Mono', monospace; }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px 30px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* MAIN LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+  /* SECTION */
+  .section { margin-bottom: 60px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #000;
+    padding: 3px 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* HIGHLIGHT COLORS */
+  .accent-card { border-left: 3px solid var(--accent); }
+  .accent2-card { border-left: 3px solid var(--accent2); }
+  .accent3-card { border-left: 3px solid var(--accent3); }
+  .accent4-card { border-left: 3px solid var(--accent4); }
+  .green-card { border-left: 3px solid var(--green); }
+  .pink-card { border-left: 3px solid var(--pink); }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .card-title.t2 { color: var(--accent2); }
+  .card-title.t3 { color: var(--accent3); }
+  .card-title.t4 { color: var(--accent4); }
+  .card-title.tg { color: var(--green); }
+  .card-title.tp { color: var(--pink); }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  th {
+    background: var(--card2);
+    color: var(--accent3);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  tr:hover td { background: rgba(255,107,53,0.04); }
+
+  /* CODE */
+  pre, code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  pre {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    color: var(--accent2);
+    margin: 12px 0;
+    line-height: 1.7;
+  }
+  code { color: var(--accent2); background: rgba(78,205,196,0.1); padding: 2px 6px; border-radius: 3px; }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    margin: 2px 3px 2px 0;
+    letter-spacing: 0.5px;
+  }
+  .tag-hot { background: rgba(255,107,53,0.2); color: var(--accent); border: 1px solid rgba(255,107,53,0.4); }
+  .tag-imp { background: rgba(255,230,109,0.15); color: var(--accent3); border: 1px solid rgba(255,230,109,0.4); }
+  .tag-skip { background: rgba(136,136,153,0.15); color: var(--muted); border: 1px solid rgba(136,136,153,0.3); }
+  .tag-prog { background: rgba(78,205,196,0.15); color: var(--accent2); border: 1px solid rgba(78,205,196,0.4); }
+
+  /* CRASH COURSE PLAN */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 20px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 40px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    border: 2px solid var(--accent);
+    background: rgba(255,107,53,0.1);
+    color: var(--accent);
+    z-index: 1;
+  }
+  .tl-content {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-top: 8px;
+  }
+  .tl-time { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .tl-details { font-size: 13px; color: var(--muted); }
+
+  /* REVISION SHEET */
+  .rev-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .rev-item {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+  }
+  .rev-topic {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent3);
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+  }
+  .rev-points { font-size: 12px; color: var(--muted); }
+  .rev-points li { list-style: none; padding: 2px 0; }
+  .rev-points li::before { content: '→ '; color: var(--accent); }
+
+  /* Q&A */
+  .qa-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .qa-q {
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    background: rgba(255,107,53,0.06);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .qa-num {
+    background: var(--accent);
+    color: #000;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .qa-a {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.7;
+  }
+
+  /* BULLET LIST */
+  .bullet-list { list-style: none; }
+  .bullet-list li {
+    padding: 5px 0;
+    padding-left: 18px;
+    position: relative;
+    font-size: 13px;
+    color: #ccc;
+  }
+  .bullet-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* 80/20 BARS */
+  .topic-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .topic-name { font-size: 13px; font-weight: 600; min-width: 160px; }
+  .bar-wrap { flex: 1; background: var(--border); border-radius: 2px; height: 6px; }
+  .bar-fill { height: 6px; border-radius: 2px; }
+  .topic-pct { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent3); min-width: 36px; }
+
+  /* SKIP SECTION */
+  .skip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background: rgba(136,136,153,0.06);
+    border: 1px solid rgba(136,136,153,0.15);
+  }
+  .skip-x {
+    background: rgba(136,136,153,0.2);
+    color: var(--muted);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-family: 'Space Mono', monospace;
+    flex-shrink: 0;
+  }
+  .skip-text { font-size: 13px; color: var(--muted); }
+
+  /* CHAPTER TABS */
+  .chapter-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* LONG ANSWER FORMAT */
+  .long-ans {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .long-ans-header {
+    background: rgba(78,205,196,0.06);
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .long-ans-body { padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #ccc; }
+  .long-ans-body h4 { color: var(--accent3); font-size: 13px; margin: 12px 0 5px; text-transform: uppercase; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px; }
+  .long-ans-body p { margin-bottom: 8px; }
+  .long-ans-body ol { padding-left: 20px; }
+  .long-ans-body ol li { margin-bottom: 6px; }
+  .long-ans-body ul { padding-left: 20px; list-style: disc; }
+  .long-ans-body ul li { margin-bottom: 4px; }
+  .marks-badge {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    background: rgba(78,205,196,0.15);
+    color: var(--accent2);
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: 1px solid rgba(78,205,196,0.3);
+  }
+
+  /* EXPECTED Q */
+  .exp-q {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .exp-star { color: var(--accent3); font-size: 16px; flex-shrink: 0; }
+  .exp-text { font-size: 13px; }
+  .exp-text strong { color: var(--text); display: block; margin-bottom: 3px; }
+  .exp-text span { color: var(--muted); font-size: 12px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 40px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    border-top: 1px solid var(--border);
+  }
+  .footer span { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 26px; }
+    .nav { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎯 Exam Crash Course</div>
+  <h1>CS 365: <span>Advanced Java</span><br>One-Night Master Guide</h1>
+  <p>TYBSc Computer Science · Semester VI · CBCS Pattern · 2 Credits</p>
+  <p style="margin-top:10px; color: var(--accent);">⚡ 5 Chapters · 3-Hour Plan · Smart Study · Score Maximum</p>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#plan">⏱ 3-Hr Plan</a>
+  <a href="#8020">📊 80/20 Topics</a>
+  <a href="#repeated">🔁 Repeated Qs</a>
+  <a href="#defs">📋 Defs & Diff</a>
+  <a href="#short">💬 Short Answers</a>
+  <a href="#long">📝 Long Answers</a>
+  <a href="#programs">💻 Programs</a>
+  <a href="#revision">⚡ Revision Sheet</a>
+  <a href="#skip">🚫 Skip List</a>
+  <a href="#expected">🎯 Expected Qs</a>
+</nav>
+
+<div class="container">
+
+<!-- ===== SECTION 1: 3-HOUR CRASH COURSE PLAN ===== -->
+<div class="section" id="plan">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <div class="section-title">⏱ 3-Hour Crash Course Plan</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">0:00<br>–<br>0:30</div>
+      <div class="tl-content accent-card">
+        <div class="tl-time" style="color:var(--accent)">Hour 1 · Part A · Ch. 1: Collections (30 min)</div>
+        <div class="tl-details">
+          Read: Collection Hierarchy, ArrayList vs LinkedList, HashSet vs TreeSet, HashMap vs Hashtable<br>
+          Memorize: Iterator syntax, Comparator code<br>
+          Do: One quick ArrayList + Iterator program mentally
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">0:30<br>–<br>1:00</div>
+      <div class="tl-content accent2-card">
+        <div class="tl-time" style="color:var(--accent2)">Hour 1 · Part B · Ch. 2: Multithreading (30 min)</div>
+        <div class="tl-details">
+          Read: Thread life cycle diagram (5 states), 2 ways to create thread (Runnable vs Thread class)<br>
+          Memorize: synchronization keyword + wait/notify/notifyAll<br>
+          Do: Write thread program mentally (printing "Hello" 50 times)
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">1:00<br>–<br>1:30</div>
+      <div class="tl-content accent3-card">
+        <div class="tl-time" style="color:var(--accent3)">Hour 2 · Part A · Ch. 3: JDBC (30 min)</div>
+        <div class="tl-details">
+          Read: JDBC Architecture, 4 driver types (focus on Type 2 & Type 4)<br>
+          Memorize: 5 JDBC steps (Load → Connection → Statement → ResultSet → Close)<br>
+          Memorize: execute(), executeUpdate(), executeQuery() differences<br>
+          Read: PreparedStatement, MetaData, commit/rollback
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">1:30<br>–<br>2:15</div>
+      <div class="tl-content accent4-card">
+        <div class="tl-time" style="color:var(--accent4)">Hour 2 · Part B · Ch. 4: Servlets & JSP (45 min)</div>
+        <div class="tl-details">
+          <strong>Most marks here!</strong><br>
+          Read: Servlet life cycle (init, service, destroy) + diagram<br>
+          Memorize: doGet vs doPost differences (5 points)<br>
+          Read: Session tracking (4 ways), Cookies<br>
+          Read: JSP life cycle, 4 scripting elements (Declaration, Scriptlet, Expression, Comment)<br>
+          Read: JSP Directives (page, include, taglib)
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2:15<br>–<br>2:45</div>
+      <div class="tl-content green-card">
+        <div class="tl-time" style="color:var(--green)">Hour 3 · Part A · Ch. 5: Spring Framework (30 min)</div>
+        <div class="tl-details">
+          Read: Why Spring, Advantages, Disadvantages<br>
+          Memorize: Spring Modules (Core, Web, Data, AOP, Test)<br>
+          Memorize: DI types (Constructor Injection vs Setter Injection)<br>
+          Read: Spring MVC architecture
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2:45<br>–<br>3:00</div>
+      <div class="tl-content pink-card">
+        <div class="tl-time" style="color:var(--pink)">Hour 3 · Final · Quick Revision (15 min)</div>
+        <div class="tl-details">
+          Skim Revision Sheet at bottom of this guide<br>
+          Revise all definitions and differences tables<br>
+          Mentally write out 1 program per chapter<br>
+          Check expected questions list
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: 80/20 TOPICS ===== -->
+<div class="section" id="8020">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <div class="section-title">📊 80/20 Topics — Maximum Marks Coverage</div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-title">Weightage by Chapter</div>
+    <div class="topic-bar"><div class="topic-name">Ch.4 Servlets & JSP</div><div class="bar-wrap"><div class="bar-fill" style="width:90%;background:var(--accent4)"></div></div><div class="topic-pct">~30%</div></div>
+    <div class="topic-bar"><div class="topic-name">Ch.3 JDBC</div><div class="bar-wrap"><div class="bar-fill" style="width:70%;background:var(--accent3)"></div></div><div class="topic-pct">~22%</div></div>
+    <div class="topic-bar"><div class="topic-name">Ch.2 Multithreading</div><div class="bar-wrap"><div class="bar-fill" style="width:65%;background:var(--accent2)"></div></div><div class="topic-pct">~20%</div></div>
+    <div class="topic-bar"><div class="topic-name">Ch.1 Collections</div><div class="bar-wrap"><div class="bar-fill" style="width:55%;background:var(--accent)"></div></div><div class="topic-pct">~18%</div></div>
+    <div class="topic-bar"><div class="topic-name">Ch.5 Spring Framework</div><div class="bar-wrap"><div class="bar-fill" style="width:35%;background:var(--green)"></div></div><div class="topic-pct">~10%</div></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card accent4-card">
+      <div class="card-title t4">Ch.1 – Must Know</div>
+      <ul class="bullet-list">
+        <li>Collection Framework Hierarchy diagram</li>
+        <li>ArrayList vs LinkedList (difference table)</li>
+        <li>HashMap vs Hashtable differences</li>
+        <li>Iterator and ListIterator usage</li>
+        <li>Comparator interface usage</li>
+        <li>HashSet, TreeSet constructors</li>
+        <li>Map interface & TreeMap</li>
+      </ul>
+    </div>
+    <div class="card accent2-card">
+      <div class="card-title t2">Ch.2 – Must Know</div>
+      <ul class="bullet-list">
+        <li>Thread Life Cycle (5 states diagram)</li>
+        <li>Two ways to create Thread (code)</li>
+        <li>Thread priorities (MIN/NORM/MAX)</li>
+        <li>Synchronization with example</li>
+        <li>wait(), notify(), notifyAll()</li>
+        <li>join(), yield(), sleep() methods</li>
+        <li>Multithreading vs Multitasking</li>
+      </ul>
+    </div>
+    <div class="card accent3-card">
+      <div class="card-title t3">Ch.3 – Must Know</div>
+      <ul class="bullet-list">
+        <li>JDBC Architecture + 4 Driver Types</li>
+        <li>5 steps to connect DB in Java</li>
+        <li>Statement vs PreparedStatement</li>
+        <li>execute(), executeQuery(), executeUpdate()</li>
+        <li>Scrollable & Updatable ResultSet</li>
+        <li>DatabaseMetaData & ResultSetMetaData</li>
+        <li>commit(), rollback(), setAutoCommit()</li>
+      </ul>
+    </div>
+    <div class="card accent-card" style="background:var(--card);">
+      <div class="card-title">Ch.4 – Must Know ⭐ HEAVY</div>
+      <ul class="bullet-list">
+        <li>Servlet Life Cycle (init/service/destroy)</li>
+        <li>doGet() vs doPost() — 5 differences</li>
+        <li>Session Tracking — 4 methods</li>
+        <li>Cookies — create and access</li>
+        <li>JSP Life Cycle (translation, compilation, init, service, destroy)</li>
+        <li>4 JSP Scripting Elements with syntax</li>
+        <li>JSP Directives (page, include, taglib)</li>
+        <li>JSP Implicit Objects (any 5)</li>
+      </ul>
+    </div>
+    <div class="card green-card">
+      <div class="card-title tg">Ch.5 – Must Know</div>
+      <ul class="bullet-list">
+        <li>Why Spring? Advantages & Disadvantages</li>
+        <li>Spring Architecture (7 modules diagram)</li>
+        <li>Dependency Injection — Constructor vs Setter</li>
+        <li>IoC (Inversion of Control) concept</li>
+        <li>Spring MVC architecture</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3: MOST REPEATED QUESTIONS ===== -->
+<div class="section" id="repeated">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <div class="section-title">🔁 Most Repeated University Questions</div>
+  </div>
+
+  <span class="chapter-label">Chapter 1 — Collections</span>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q1</span> What is a Collection? Explain Collection Framework. <span class="tag tag-hot" style="margin-left:auto">5× REPEATED</span></div>
+    <div class="qa-a">Collection is an object that holds a group of other objects (elements). The Java Collections Framework is a unified architecture in java.util package with Interfaces, Implementation Classes, and Algorithms to store, process, and manipulate groups of objects efficiently.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q2</span> Explain Map Interface with its implementations. <span class="tag tag-hot" style="margin-left:auto">4× REPEATED</span></div>
+    <div class="qa-a">Map is an interface that maps unique keys to values. No duplicate keys allowed. Key implementations: HashMap (no order), LinkedHashMap (insertion order), TreeMap (sorted order), Hashtable (synchronized).</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q3</span> Difference between ArrayList and LinkedList <span class="tag tag-hot" style="margin-left:auto">4× REPEATED</span></div>
+    <div class="qa-a">See Differences Table below (Section 4).</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q4</span> State the use of Iterator and ListIterator. <span class="tag tag-imp">3× REPEATED</span></div>
+    <div class="qa-a">Iterator: Traverses collection in forward direction only. Methods: hasNext(), next(), remove(). ListIterator: Traverses both forward and backward. Methods: hasNext(), hasPrevious(), next(), previous(), add(), set().</div>
+  </div>
+
+  <span class="chapter-label" style="margin-top:20px;display:block">Chapter 2 — Multithreading</span>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q5</span> Explain Thread Life Cycle with diagram/methods. <span class="tag tag-hot" style="margin-left:auto">5× REPEATED</span></div>
+    <div class="qa-a">See Long Answers Section below.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q6</span> Two ways to create a Thread in Java (with example). <span class="tag tag-hot" style="margin-left:auto">5× REPEATED</span></div>
+    <div class="qa-a">1) Extend Thread class, override run(). 2) Implement Runnable interface, pass to Thread constructor. See Programs Section.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q7</span> Explain Thread Synchronization with example. <span class="tag tag-hot" style="margin-left:auto">4× REPEATED</span></div>
+    <div class="qa-a">Synchronization ensures only one thread accesses shared resource at a time using the <code>synchronized</code> keyword. Prevents race conditions. Used on methods or blocks.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q8</span> Explain wait(), notify(), notifyAll() — Inter-thread Communication. <span class="tag tag-imp">4× REPEATED</span></div>
+    <div class="qa-a">wait(): Releases lock and waits. notify(): Wakes one waiting thread. notifyAll(): Wakes all waiting threads. All must be called from synchronized context.</div>
+  </div>
+
+  <span class="chapter-label" style="margin-top:20px;display:block">Chapter 3 — JDBC</span>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q9</span> Explain JDBC Architecture with types of JDBC Drivers. <span class="tag tag-hot" style="margin-left:auto">6× REPEATED</span></div>
+    <div class="qa-a">See Long Answers Section below. ⭐ Most important JDBC question!</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q10</span> Explain execute(), executeQuery(), executeUpdate(). <span class="tag tag-hot" style="margin-left:auto">4× REPEATED</span></div>
+    <div class="qa-a">executeQuery(): Used for SELECT → returns ResultSet. executeUpdate(): Used for INSERT/UPDATE/DELETE → returns int. execute(): Used for any SQL → returns boolean.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q11</span> What is ResultSet? Explain Scrollable and Updatable ResultSet. <span class="tag tag-imp">3× REPEATED</span></div>
+    <div class="qa-a">ResultSet holds data from SELECT. By default forward-only & read-only. Scrollable: TYPE_SCROLL_SENSITIVE/INSENSITIVE. Updatable: CONCUR_UPDATABLE.</div>
+  </div>
+
+  <span class="chapter-label" style="margin-top:20px;display:block">Chapter 4 — Servlets & JSP</span>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q12</span> Explain Servlet Life Cycle. <span class="tag tag-hot" style="margin-left:auto">6× REPEATED</span></div>
+    <div class="qa-a">See Long Answers Section below. ⭐ #1 Most repeated topic!</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q13</span> Difference between doGet() and doPost() methods. <span class="tag tag-hot" style="margin-left:auto">6× REPEATED</span></div>
+    <div class="qa-a">See Differences Table (Section 4).</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q14</span> Explain JSP Life Cycle. <span class="tag tag-hot" style="margin-left:auto">5× REPEATED</span></div>
+    <div class="qa-a">See Long Answers Section below.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q15</span> Explain Scripting Elements in JSP. <span class="tag tag-hot" style="margin-left:auto">5× REPEATED</span></div>
+    <div class="qa-a">4 types: Declaration (<%! %>), Scriptlet (<% %>), Expression (<%= %>), Comment (<%-- --%>). See Short Answers.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q16</span> What is Cookie? How to create and access cookies in Servlet. <span class="tag tag-hot" style="margin-left:auto">4× REPEATED</span></div>
+    <div class="qa-a">Cookie is a small text file stored on client browser. Create: new Cookie("name","value"), response.addCookie(cookie). Access: request.getCookies() → loop.</div>
+  </div>
+
+  <span class="chapter-label" style="margin-top:20px;display:block">Chapter 5 — Spring Framework</span>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q17</span> Explain Spring Framework Architecture / Modules. <span class="tag tag-hot" style="margin-left:auto">Most Important</span></div>
+    <div class="qa-a">See Long Answers Section below. 7 module groups: Core Container, Web, Data Access, AOP, Aspects, Instrumentation, Test.</div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q"><span class="qa-num">Q18</span> Explain Dependency Injection in Spring. <span class="tag tag-imp">Very Important</span></div>
+    <div class="qa-a">DI = Spring container injects dependencies into objects. Two types: 1) Constructor Injection (via constructor), 2) Setter Injection (via setter method). Ensures loose coupling.</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: DEFINITIONS & DIFFERENCES ===== -->
+<div class="section" id="defs">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <div class="section-title">📋 Definitions & Differences in Table Form</div>
+  </div>
+
+  <!-- DIFF 1 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">ArrayList vs LinkedList</div>
+    <table>
+      <tr><th>Basis</th><th>ArrayList</th><th>LinkedList</th></tr>
+      <tr><td>Internal Structure</td><td>Dynamic Array</td><td>Doubly Linked List</td></tr>
+      <tr><td>Access Speed</td><td>Fast (O(1) random access)</td><td>Slow (O(n) traversal)</td></tr>
+      <tr><td>Insert/Delete Speed</td><td>Slow (shifting required)</td><td>Fast (pointer update)</td></tr>
+      <tr><td>Memory</td><td>Less (stores data only)</td><td>More (stores data + 2 pointers)</td></tr>
+      <tr><td>Use Case</td><td>Frequent read operations</td><td>Frequent insert/delete</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 2 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title t2">HashMap vs Hashtable</div>
+    <table>
+      <tr><th>Basis</th><th>HashMap</th><th>Hashtable</th></tr>
+      <tr><td>Thread Safety</td><td>Not synchronized (not thread-safe)</td><td>Synchronized (thread-safe)</td></tr>
+      <tr><td>Null Keys/Values</td><td>Allows one null key, multiple null values</td><td>Does NOT allow null keys or values</td></tr>
+      <tr><td>Performance</td><td>Faster</td><td>Slower (due to synchronization)</td></tr>
+      <tr><td>Inheritance</td><td>Extends AbstractMap</td><td>Extends Dictionary</td></tr>
+      <tr><td>Iterator</td><td>Fail-fast iterator</td><td>Enumeration (not fail-fast)</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 3 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title t3">Iterator vs ListIterator</div>
+    <table>
+      <tr><th>Basis</th><th>Iterator</th><th>ListIterator</th></tr>
+      <tr><td>Direction</td><td>Forward only</td><td>Both forward and backward</td></tr>
+      <tr><td>Works with</td><td>All Collections</td><td>List only (ArrayList, LinkedList)</td></tr>
+      <tr><td>Add Element</td><td>Cannot add</td><td>Can add using add()</td></tr>
+      <tr><td>Set Element</td><td>Cannot set</td><td>Can set using set()</td></tr>
+      <tr><td>Methods</td><td>hasNext(), next(), remove()</td><td>hasNext(), next(), hasPrevious(), previous(), add(), set()</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 4 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">doGet() vs doPost()</div>
+    <table>
+      <tr><th>Basis</th><th>doGet()</th><th>doPost()</th></tr>
+      <tr><td>Data Sending</td><td>Data in URL (query string)</td><td>Data in HTTP body</td></tr>
+      <tr><td>Security</td><td>Less secure (visible in URL)</td><td>More secure</td></tr>
+      <tr><td>Data Size</td><td>Limited (~2048 chars)</td><td>No limit</td></tr>
+      <tr><td>Bookmarkable</td><td>Yes (can bookmark URL)</td><td>No</td></tr>
+      <tr><td>Idempotent</td><td>Yes (same result each time)</td><td>No</td></tr>
+      <tr><td>Use Case</td><td>Search, read data</td><td>Login forms, file upload, sensitive data</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 5 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title t2">Servlet vs JSP</div>
+    <table>
+      <tr><th>Basis</th><th>Servlet</th><th>JSP</th></tr>
+      <tr><td>Nature</td><td>Java code with HTML inside</td><td>HTML with Java code inside</td></tr>
+      <tr><td>Coding</td><td>Complex (more Java)</td><td>Simple (less Java)</td></tr>
+      <tr><td>Performance</td><td>Faster (directly compiled)</td><td>Slightly slower (translation first)</td></tr>
+      <tr><td>Modification</td><td>Requires recompilation</td><td>Auto re-translation</td></tr>
+      <tr><td>Presentation</td><td>Not ideal for UI</td><td>Ideal for UI (view layer)</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 6 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title t3">Multithreading vs Multitasking</div>
+    <table>
+      <tr><th>Basis</th><th>Multithreading</th><th>Multitasking</th></tr>
+      <tr><td>Definition</td><td>Multiple threads within ONE process</td><td>Multiple processes running simultaneously</td></tr>
+      <tr><td>Resource Sharing</td><td>Threads share memory/resources</td><td>Processes have separate memory</td></tr>
+      <tr><td>Communication</td><td>Easy (shared memory)</td><td>Difficult (IPC needed)</td></tr>
+      <tr><td>Overhead</td><td>Less (lighter threads)</td><td>More (heavier processes)</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 7 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">Statement vs PreparedStatement (JDBC)</div>
+    <table>
+      <tr><th>Basis</th><th>Statement</th><th>PreparedStatement</th></tr>
+      <tr><td>Compilation</td><td>Compiled each time</td><td>Pre-compiled (faster)</td></tr>
+      <tr><td>SQL Injection</td><td>Vulnerable</td><td>Safe (uses parameters)</td></tr>
+      <tr><td>Performance</td><td>Slower for repeated queries</td><td>Faster for repeated queries</td></tr>
+      <tr><td>Parameters</td><td>SQL hardcoded</td><td>Uses ? as placeholders</td></tr>
+      <tr><td>Use Case</td><td>One-time queries</td><td>Repeated queries with different values</td></tr>
+    </table>
+  </div>
+
+  <!-- DIFF 8 -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title t4">Constructor DI vs Setter DI (Spring)</div>
+    <table>
+      <tr><th>Basis</th><th>Constructor Injection</th><th>Setter Injection</th></tr>
+      <tr><td>When injected</td><td>At object creation time</td><td>After object creation</td></tr>
+      <tr><td>Mandatory/Optional</td><td>Makes dependency mandatory</td><td>Dependencies are optional</td></tr>
+      <tr><td>Immutability</td><td>Promotes immutable objects</td><td>Objects can change</td></tr>
+      <tr><td>Partial Dependencies</td><td>All must be provided</td><td>Can inject partially</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: SHORT ANSWERS ===== -->
+<div class="section" id="short">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <div class="section-title">💬 Short Answers for Every Key Topic</div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card accent-card">
+      <div class="card-title">What is Collection Framework?</div>
+      <p style="font-size:13px;color:#ccc">A unified architecture in java.util package with Interfaces (Collection, Set, List, Map), Classes (ArrayList, HashSet, HashMap), and Algorithms (sort, search) to store and manipulate groups of objects.</p>
+    </div>
+    <div class="card accent-card">
+      <div class="card-title">What is HashSet?</div>
+      <p style="font-size:13px;color:#ccc">HashSet implements Set interface. Stores unique elements only (no duplicates). Does not maintain insertion order. Backed by a HashMap internally. O(1) for add, remove, contains.</p>
+    </div>
+    <div class="card accent-card">
+      <div class="card-title">What is TreeSet?</div>
+      <p style="font-size:13px;color:#ccc">TreeSet implements SortedSet. Stores unique elements in sorted (ascending) order. Implements NavigableSet. Backed by TreeMap. Uses compareTo() for ordering. O(log n) operations.</p>
+    </div>
+    <div class="card accent-card">
+      <div class="card-title">What is Comparator?</div>
+      <p style="font-size:13px;color:#ccc">Comparator is a functional interface (java.util) used to define custom sorting. Implements compare(o1, o2) method. Used when natural ordering is not desired or class cannot be modified.</p>
+    </div>
+    <div class="card accent2-card">
+      <div class="card-title t2">What is Multithreading?</div>
+      <p style="font-size:13px;color:#ccc">Executing two or more threads simultaneously within a single process. Each thread is an independent path of execution. Makes optimal use of CPU. Java has built-in support via Thread class and Runnable interface.</p>
+    </div>
+    <div class="card accent2-card">
+      <div class="card-title t2">What is Synchronization?</div>
+      <p style="font-size:13px;color:#ccc">Controlling access to shared resources by multiple threads. Uses <code>synchronized</code> keyword. A synchronized method/block can be accessed by only ONE thread at a time. Prevents race conditions and data inconsistency.</p>
+    </div>
+    <div class="card accent2-card">
+      <div class="card-title t2">What is join() method?</div>
+      <p style="font-size:13px;color:#ccc">t.join() causes current thread to pause until thread t completes execution. Used to ensure a thread finishes before proceeding. Can throw InterruptedException.</p>
+    </div>
+    <div class="card accent2-card">
+      <div class="card-title t2">What is yield() method?</div>
+      <p style="font-size:13px;color:#ccc">Thread.yield() temporarily pauses the currently executing thread and gives a chance to other threads of same or higher priority to execute. Does not release any lock. Thread goes back to Runnable state.</p>
+    </div>
+    <div class="card accent3-card">
+      <div class="card-title t3">What is JDBC?</div>
+      <p style="font-size:13px;color:#ccc">Java DataBase Connectivity – a Java API to connect Java programs to databases. Uses JDBC drivers to send SQL queries and get results. Part of java.sql package. Write Once Run Everywhere (WORA).</p>
+    </div>
+    <div class="card accent3-card">
+      <div class="card-title t3">What is commit() and rollback()?</div>
+      <p style="font-size:13px;color:#ccc">commit(): Makes all changes in current transaction permanent. rollback(): Undoes all changes made since last commit. Used with setAutoCommit(false) for manual transaction control.</p>
+    </div>
+    <div class="card accent3-card">
+      <div class="card-title t3">What is MetaData?</div>
+      <p style="font-size:13px;color:#ccc">Data about data. DatabaseMetaData: Info about DB (name, version, tables). ResultSetMetaData: Info about ResultSet (column count, column names, types). Obtained via con.getMetaData() and rs.getMetaData().</p>
+    </div>
+    <div class="card accent-card" style="border-left-color:var(--accent4)">
+      <div class="card-title t4">What is Servlet?</div>
+      <p style="font-size:13px;color:#ccc">A Java class that runs on a web server and responds to HTTP requests. Acts as middle layer between HTTP client and backend (DB/applications). Generates dynamic web content. Part of javax.servlet package.</p>
+    </div>
+    <div class="card accent-card" style="border-left-color:var(--accent4)">
+      <div class="card-title t4">What is JSP?</div>
+      <p style="font-size:13px;color:#ccc">Java Server Pages – a text document combining static HTML with dynamic Java code. Server processes JSP → converts to Servlet → compiles → executes. Simpler than Servlet for view layer. Uses scripting elements.</p>
+    </div>
+    <div class="card accent-card" style="border-left-color:var(--accent4)">
+      <div class="card-title t4">What is Session Tracking?</div>
+      <p style="font-size:13px;color:#ccc">HTTP is stateless. Session tracking maintains client state across requests. 4 methods: (1) Cookies, (2) URL Rewriting, (3) Hidden Form Fields, (4) HttpSession object.</p>
+    </div>
+    <div class="card accent-card" style="border-left-color:var(--accent4)">
+      <div class="card-title t4">What is a Scriptlet in JSP?</div>
+      <p style="font-size:13px;color:#ccc">Scriptlet contains Java code that executes per request. Syntax: &lt;% Java code here %&gt;. Placed inside service() method of generated Servlet. Can contain variables, loops, conditionals.</p>
+    </div>
+    <div class="card green-card">
+      <div class="card-title tg">What is Spring Framework?</div>
+      <p style="font-size:13px;color:#ccc">Open-source Java platform providing infrastructure support for enterprise Java. Created by Rod Johnson, released 2003. Lightweight, IoC-based, supports DI, AOP, MVC, JDBC, transactions. Uses POJO model.</p>
+    </div>
+    <div class="card green-card">
+      <div class="card-title tg">What is IoC in Spring?</div>
+      <p style="font-size:13px;color:#ccc">Inversion of Control – Spring container controls object creation and dependency management instead of programmer. Objects don't create their own dependencies; the container injects them. Promotes loose coupling.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6: LONG ANSWERS ===== -->
+<div class="section" id="long">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <div class="section-title">📝 Long Answers in Exam Writing Format</div>
+  </div>
+
+  <!-- LONG 1 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-hot">CH.2</span>
+      Explain Thread Life Cycle (States of Thread) with Diagram
+      <span class="marks-badge" style="margin-left:auto">[4–5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>Definition</h4>
+      <p>A thread in Java goes through several states from creation to termination. These states together form the Thread Life Cycle.</p>
+      <h4>States of Thread</h4>
+      <ol>
+        <li><strong>New:</strong> Thread object is created using new keyword but start() not yet called. Thread is in born state.</li>
+        <li><strong>Runnable:</strong> Thread calls start(). Thread is ready to run but waiting for CPU. Scheduler decides when to give CPU.</li>
+        <li><strong>Running:</strong> Thread gets CPU time and executes run() method. Thread scheduler selects it from Runnable pool.</li>
+        <li><strong>Blocked/Waiting:</strong> Thread is alive but not eligible to run. Caused by: sleep(), wait(), join(), or waiting for I/O.</li>
+        <li><strong>Terminated (Dead):</strong> run() method completes or stop() is called. Thread cannot be restarted.</li>
+      </ol>
+      <h4>Diagram (Draw in Exam)</h4>
+      <pre style="color:var(--accent3);font-size:11px">
+New ──start()──▶ Runnable ◀──────────────────────────┐
+                    │                                  │
+               scheduler                           notify()/
+                    │                             sleep expires
+                    ▼                                  │
+                Running ──sleep()/wait()/join()──▶ Blocked
+                    │
+              run() completes
+                    │
+                    ▼
+               Terminated</pre>
+      <h4>Key Methods</h4>
+      <ul>
+        <li>start() – starts thread, calls run()</li>
+        <li>sleep(ms) – makes thread sleep for ms milliseconds</li>
+        <li>wait() – releases lock, waits for notify()</li>
+        <li>join() – waits for another thread to finish</li>
+        <li>yield() – gives up CPU to same/higher priority thread</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LONG 2 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-hot">CH.4</span>
+      Explain Servlet Life Cycle
+      <span class="marks-badge" style="margin-left:auto">[5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>Definition</h4>
+      <p>The Servlet Life Cycle defines the process from servlet creation to destruction, managed by the Servlet Container (like Tomcat).</p>
+      <h4>Phases of Servlet Life Cycle</h4>
+      <ol>
+        <li><strong>Loading and Instantiation:</strong> Container loads servlet class and creates an instance when first request arrives.</li>
+        <li><strong>Initialization – init():</strong> Called only ONCE after servlet is instantiated. Used to initialize resources like DB connections. Signature: public void init(ServletConfig config)</li>
+        <li><strong>Request Handling – service():</strong> Called for EVERY client request. Determines request type (GET/POST) and calls doGet() or doPost(). Signature: public void service(HttpServletRequest req, HttpServletResponse res)</li>
+        <li><strong>Destroy – destroy():</strong> Called only ONCE before servlet is removed from memory. Used to release resources. Signature: public void destroy()</li>
+      </ol>
+      <h4>Diagram (Draw in Exam)</h4>
+      <pre style="color:var(--accent4);font-size:11px">
+Client Request
+      │
+      ▼
+ [Servlet Container]
+      │
+      ├──▶ Load Class
+      │
+      ├──▶ new Servlet()
+      │
+      ├──▶ init()     ← ONCE
+      │
+      ├──▶ service()  ← EVERY REQUEST
+      │       │
+      │       ├──▶ doGet()
+      │       └──▶ doPost()
+      │
+      └──▶ destroy()  ← ONCE (on shutdown)</pre>
+    </div>
+  </div>
+
+  <!-- LONG 3 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-hot">CH.4</span>
+      Explain JSP Life Cycle
+      <span class="marks-badge" style="margin-left:auto">[4–5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>Definition</h4>
+      <p>The JSP Life Cycle describes the series of steps a JSP page goes through from the moment it is first accessed to when it is destroyed.</p>
+      <h4>Phases</h4>
+      <ol>
+        <li><strong>Translation:</strong> JSP file (.jsp) is converted to a Java Servlet source file (.java) by the JSP container.</li>
+        <li><strong>Compilation:</strong> The .java file is compiled into a .class (bytecode) file.</li>
+        <li><strong>Loading:</strong> The servlet class is loaded into JVM memory.</li>
+        <li><strong>Instantiation:</strong> A servlet object is created.</li>
+        <li><strong>Initialization – jspInit():</strong> Called once. Used to initialize resources.</li>
+        <li><strong>Request Processing – _jspService():</strong> Called for every client request. Contains JSP page logic.</li>
+        <li><strong>Destroy – jspDestroy():</strong> Called once before JSP is removed. Releases resources.</li>
+      </ol>
+      <h4>Note for Exam</h4>
+      <p>JSP Life Cycle is similar to Servlet Life Cycle PLUS the extra Translation and Compilation phases at the beginning. After compilation, JSP behaves exactly like a Servlet.</p>
+    </div>
+  </div>
+
+  <!-- LONG 4 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-hot">CH.3</span>
+      Explain JDBC Architecture with Types of JDBC Drivers
+      <span class="marks-badge" style="margin-left:auto">[5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>JDBC Architecture</h4>
+      <p>JDBC API provides a standard interface between Java application and Database. It consists of two layers:</p>
+      <ul>
+        <li><strong>JDBC API Layer:</strong> Interface between Java application and JDBC driver manager. Uses java.sql package.</li>
+        <li><strong>JDBC Driver Layer:</strong> Communicates with actual database. Each JDBC driver is specific to one database.</li>
+      </ul>
+      <h4>5 Steps to Connect to Database</h4>
+      <ol>
+        <li>Load/Register Driver: <code>Class.forName("com.mysql.Driver");</code></li>
+        <li>Create Connection: <code>Connection con = DriverManager.getConnection(url, user, pass);</code></li>
+        <li>Create Statement: <code>Statement st = con.createStatement();</code></li>
+        <li>Execute Query: <code>ResultSet rs = st.executeQuery("SELECT * FROM table");</code></li>
+        <li>Close Connection: <code>con.close();</code></li>
+      </ol>
+      <h4>Four Types of JDBC Drivers</h4>
+      <ol>
+        <li><strong>Type 1 – JDBC-ODBC Bridge Driver:</strong> Converts JDBC calls to ODBC calls. Platform-dependent. Slow. Only for testing. Requires ODBC driver installed.</li>
+        <li><strong>Type 2 – Native API Driver (Partially Java):</strong> Converts JDBC calls to database-specific native calls. Faster than Type 1. Platform-dependent. Requires native library.</li>
+        <li><strong>Type 3 – Network Protocol Driver (Middleware):</strong> Translates JDBC calls to middleware server protocol. Middleware server communicates with DB. Platform-independent. Good for internet.</li>
+        <li><strong>Type 4 – Thin Driver (Pure Java):</strong> Directly converts JDBC calls to database protocol. Pure Java. Platform-independent. Fastest. Most popular. Example: MySQL Connector/J.</li>
+      </ol>
+      <h4>Preferred</h4>
+      <p>Type 4 is the most preferred for production as it is pure Java, portable, and has the best performance.</p>
+    </div>
+  </div>
+
+  <!-- LONG 5 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-imp">CH.4</span>
+      Explain Scripting Elements in JSP
+      <span class="marks-badge" style="margin-left:auto">[4–5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>Definition</h4>
+      <p>Scripting elements allow embedding Java code in JSP pages. There are 4 types of scripting elements:</p>
+      <ol>
+        <li>
+          <strong>JSP Declarations (&lt;%! %&gt;):</strong><br>
+          Declares variables and methods at class level (outside service method).<br>
+          Syntax: <code>&lt;%! int count = 0; void display() { } %&gt;</code><br>
+          Declared once, persists across requests.
+        </li>
+        <li>
+          <strong>JSP Scriptlets (&lt;% %&gt;):</strong><br>
+          Contains Java statements executed per request inside _jspService().<br>
+          Syntax: <code>&lt;% out.println("Hello"); for(int i=0;i&lt;5;i++) { } %&gt;</code><br>
+          Most commonly used for logic.
+        </li>
+        <li>
+          <strong>JSP Expressions (&lt;%= %&gt;):</strong><br>
+          Evaluates Java expression and prints result to output. No semicolon.<br>
+          Syntax: <code>&lt;%= new java.util.Date() %&gt;</code><br>
+          Equivalent to out.println().
+        </li>
+        <li>
+          <strong>JSP Comments (&lt;%-- --%&gt;):</strong><br>
+          Comments not sent to client. Not visible in page source.<br>
+          Syntax: <code>&lt;%-- This is a JSP comment --%&gt;</code><br>
+          Different from HTML comment &lt;!-- which IS sent to client.
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- LONG 6 -->
+  <div class="long-ans">
+    <div class="long-ans-header">
+      <span class="tag tag-imp">CH.5</span>
+      Explain Spring Framework Architecture (Modules)
+      <span class="marks-badge" style="margin-left:auto">[5 M]</span>
+    </div>
+    <div class="long-ans-body">
+      <h4>Spring Architecture</h4>
+      <p>Spring Framework is organized into modules grouped into containers. Key modules:</p>
+      <ol>
+        <li><strong>Core Container:</strong> Foundation of Spring. Includes:
+          <ul>
+            <li>Core: Provides IoC and DI</li>
+            <li>Beans: Provides BeanFactory</li>
+            <li>Context: Builds on Core+Beans, loads components</li>
+            <li>SpEL: Spring Expression Language</li>
+          </ul>
+        </li>
+        <li><strong>Web Container:</strong>
+          <ul>
+            <li>Web: Basic web integration</li>
+            <li>Web-Servlet: Spring MVC implementation</li>
+            <li>WebSocket: Two-way communication</li>
+            <li>Web-Portlet: MVC for portlet environment</li>
+          </ul>
+        </li>
+        <li><strong>Data Access/Integration Layer:</strong>
+          <ul>
+            <li>JDBC: Abstracts JDBC coding</li>
+            <li>ORM: Integrates JPA, Hibernate, JDO</li>
+            <li>JMS: Java Messaging Service</li>
+            <li>Transactions: Programmatic and declarative</li>
+          </ul>
+        </li>
+        <li><strong>AOP Module:</strong> Aspect-Oriented Programming. Method interceptors and pointcuts.</li>
+        <li><strong>Test Module:</strong> Supports testing with JUnit/TestNG.</li>
+      </ol>
+      <h4>Key Benefits of Architecture</h4>
+      <p>Modular design allows developers to pick only needed modules. Loose coupling via DI. Clean separation of concerns.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 7: PROGRAMS ===== -->
+<div class="section" id="programs">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <div class="section-title">💻 Practical / Programming Questions</div>
+  </div>
+
+  <div class="card accent-card" style="margin-bottom:16px">
+    <div class="card-title">P1 — ArrayList with Iterator (Collections) <span class="tag tag-hot">REPEATED 4×</span></div>
+<pre>import java.util.*;
+public class ArrayListDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+        list.add("Mumbai"); list.add("Pune"); list.add("Delhi");
+        System.out.println("ArrayList: " + list);
+        
+        // Using Iterator
+        Iterator&lt;String&gt; it = list.iterator();
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+        list.removeAll(list);  // remove all
+        System.out.println("After remove: " + list);
+    }
+}</pre>
+  </div>
+
+  <div class="card accent2-card" style="margin-bottom:16px">
+    <div class="card-title t2">P2 — Creating Thread (Two Ways) <span class="tag tag-hot">REPEATED 5×</span></div>
+<pre>// WAY 1: Extend Thread class
+class MyThread extends Thread {
+    public void run() {
+        for(int i=1; i&lt;=5; i++)
+            System.out.println("Thread: " + i);
+    }
+}
+
+// WAY 2: Implement Runnable interface
+class MyRunnable implements Runnable {
+    public void run() {
+        for(int i=1; i&lt;=5; i++)
+            System.out.println("Runnable: " + i);
+    }
+}
+
+public class ThreadDemo {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        t1.start();  // WAY 1
+        
+        Thread t2 = new Thread(new MyRunnable());
+        t2.start();  // WAY 2
+    }
+}</pre>
+  </div>
+
+  <div class="card accent3-card" style="margin-bottom:16px">
+    <div class="card-title t3">P3 — JDBC: Insert and Display Records <span class="tag tag-hot">REPEATED 5×</span></div>
+<pre>import java.sql.*;
+public class JDBCDemo {
+    public static void main(String[] args) throws Exception {
+        // Step 1: Load Driver
+        Class.forName("com.mysql.jdbc.Driver");
+        
+        // Step 2: Get Connection
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/mydb", "root", "");
+        
+        // Step 3: Create Statement
+        Statement st = con.createStatement();
+        
+        // Step 4a: Insert
+        st.executeUpdate(
+            "INSERT INTO student VALUES(1,'Rahul',85)");
+        
+        // Step 4b: Display
+        ResultSet rs = st.executeQuery(
+            "SELECT * FROM student");
+        while(rs.next()) {
+            System.out.println(rs.getInt(1) + " " +
+                               rs.getString(2) + " " +
+                               rs.getFloat(3));
+        }
+        
+        // Step 5: Close
+        con.close();
+    }
+}</pre>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent4);margin-bottom:16px">
+    <div class="card-title t4">P4 — Servlet: Display Current Date & Time <span class="tag tag-hot">REPEATED 3×</span></div>
+<pre>import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.Date;
+
+public class DateServlet extends HttpServlet {
+    public void doGet(HttpServletRequest req,
+                      HttpServletResponse res)
+            throws IOException {
+        res.setContentType("text/html");
+        PrintWriter pw = res.getWriter();
+        pw.println("&lt;html&gt;&lt;body&gt;");
+        pw.println("&lt;h2&gt;Current Date and Time: &lt;/h2&gt;");
+        pw.println("&lt;p&gt;" + new Date() + "&lt;/p&gt;");
+        pw.println("&lt;/body&gt;&lt;/html&gt;");
+        pw.close();
+    }
+}</pre>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent4);margin-bottom:16px">
+    <div class="card-title t4">P5 — Servlet: Count Servlet Invocations <span class="tag tag-hot">REPEATED 4×</span></div>
+<pre>import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+
+public class CountServlet extends HttpServlet {
+    int count = 0;  // class-level variable
+    
+    public void doGet(HttpServletRequest req,
+                      HttpServletResponse res)
+            throws IOException {
+        count++;  // increment on each request
+        res.setContentType("text/html");
+        PrintWriter pw = res.getWriter();
+        pw.println("Servlet invoked " + count + " times.");
+        pw.close();
+    }
+}</pre>
+  </div>
+
+  <div class="card green-card" style="margin-bottom:16px">
+    <div class="card-title tg">P6 — JSP Scripting Elements Demo <span class="tag tag-imp">Important</span></div>
+<pre>&lt;%-- JSP Comment: Not visible in source --%&gt;
+&lt;%! int count = 0; %&gt;          &lt;!-- Declaration --&gt;
+&lt;html&gt;&lt;body&gt;
+&lt;% count++;                     // Scriptlet
+   out.println("Count: "+count);
+%&gt;
+&lt;p&gt;Today: &lt;%= new java.util.Date() %&gt;&lt;/p&gt; &lt;!-- Expression --&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+  </div>
+
+  <div class="card accent2-card" style="margin-bottom:16px">
+    <div class="card-title t2">P7 — Thread Synchronization Example <span class="tag tag-imp">Important</span></div>
+<pre>class SharedCounter {
+    int count = 0;
+    
+    synchronized void increment() {  // synchronized method
+        count++;
+        System.out.println(Thread.currentThread().getName() 
+                           + " Count: " + count);
+    }
+}
+
+class MyThread extends Thread {
+    SharedCounter sc;
+    MyThread(SharedCounter sc) { this.sc = sc; }
+    public void run() {
+        for(int i=0; i&lt;3; i++) sc.increment();
+    }
+}
+
+public class SyncDemo {
+    public static void main(String[] args) {
+        SharedCounter sc = new SharedCounter();
+        MyThread t1 = new MyThread(sc);
+        MyThread t2 = new MyThread(sc);
+        t1.start(); t2.start();
+    }
+}</pre>
+  </div>
+
+  <div class="card accent3-card" style="margin-bottom:16px">
+    <div class="card-title t3">P8 — Hashtable: Store and Retrieve Students <span class="tag tag-imp">Repeated</span></div>
+<pre>import java.util.*;
+public class HashtableDemo {
+    public static void main(String[] args) {
+        Hashtable&lt;Integer, String&gt; ht = new Hashtable&lt;&gt;();
+        ht.put(1, "Alice");
+        ht.put(2, "Bob");
+        ht.put(3, "Carol");
+        
+        // Display using enumeration
+        Enumeration&lt;Integer&gt; keys = ht.keys();
+        while(keys.hasMoreElements()) {
+            int k = keys.nextElement();
+            System.out.println(k + " : " + ht.get(k));
+        }
+    }
+}</pre>
+  </div>
+</div>
+
+<!-- ===== SECTION 8: REVISION SHEET ===== -->
+<div class="section" id="revision">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <div class="section-title">⚡ Last Minute Revision Sheet</div>
+  </div>
+
+  <div class="rev-grid">
+    <div class="rev-item">
+      <div class="rev-topic">Collection Hierarchy</div>
+      <ul class="rev-points">
+        <li>Root: Collection interface</li>
+        <li>Set → HashSet, TreeSet, LinkedHashSet</li>
+        <li>List → ArrayList, LinkedList, Vector</li>
+        <li>Map → HashMap, Hashtable, TreeMap</li>
+        <li>Queue → PriorityQueue</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Thread Life Cycle</div>
+      <ul class="rev-points">
+        <li>1. New → 2. Runnable → 3. Running</li>
+        <li>4. Blocked/Waiting → 5. Terminated</li>
+        <li>start() → Runnable; run() → Running</li>
+        <li>sleep()/wait() → Blocked</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">2 Ways to Create Thread</div>
+      <ul class="rev-points">
+        <li>Way 1: extends Thread, override run()</li>
+        <li>Way 2: implements Runnable, pass to Thread()</li>
+        <li>Both call .start() to begin</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Thread Priority Values</div>
+      <ul class="rev-points">
+        <li>MIN_PRIORITY = 1</li>
+        <li>NORM_PRIORITY = 5 (default)</li>
+        <li>MAX_PRIORITY = 10</li>
+        <li>setPriority(n) / getPriority()</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">5 JDBC Steps</div>
+      <ul class="rev-points">
+        <li>1. Load Driver (Class.forName)</li>
+        <li>2. Get Connection (DriverManager)</li>
+        <li>3. Create Statement</li>
+        <li>4. Execute Query / ResultSet</li>
+        <li>5. Close Connection</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">JDBC Driver Types</div>
+      <ul class="rev-points">
+        <li>T1: JDBC-ODBC Bridge (slow)</li>
+        <li>T2: Native API (partial Java)</li>
+        <li>T3: Network Protocol (middleware)</li>
+        <li>T4: Pure Java / Thin Driver ⭐ Best</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Servlet Life Cycle</div>
+      <ul class="rev-points">
+        <li>1. Load → 2. Instantiate</li>
+        <li>3. init() — ONCE</li>
+        <li>4. service() → doGet()/doPost() — EVERY REQ</li>
+        <li>5. destroy() — ONCE</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">JSP Scripting Elements</div>
+      <ul class="rev-points">
+        <li>Declaration: &lt;%! %&gt; (class level)</li>
+        <li>Scriptlet: &lt;% %&gt; (method level)</li>
+        <li>Expression: &lt;%= %&gt; (print value)</li>
+        <li>Comment: &lt;%-- --%&gt; (not sent to client)</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Session Tracking Methods</div>
+      <ul class="rev-points">
+        <li>1. Cookies</li>
+        <li>2. URL Rewriting</li>
+        <li>3. Hidden Form Fields</li>
+        <li>4. HttpSession API</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">JSP Directives</div>
+      <ul class="rev-points">
+        <li>page: &lt;%@ page language="java" %&gt;</li>
+        <li>include: &lt;%@ include file="x.jsp" %&gt;</li>
+        <li>taglib: &lt;%@ taglib uri="..." %&gt;</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Spring DI Types</div>
+      <ul class="rev-points">
+        <li>Constructor Injection (mandatory deps)</li>
+        <li>Setter Injection (optional deps)</li>
+        <li>Both configured in XML / Annotations</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Spring Modules (5 Key)</div>
+      <ul class="rev-points">
+        <li>Core Container: Core, Beans, Context, SpEL</li>
+        <li>Web: Servlet, WebSocket, Portlet</li>
+        <li>Data: JDBC, ORM, JMS, Transactions</li>
+        <li>AOP: Aspect-Oriented Programming</li>
+        <li>Test: JUnit/TestNG support</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Synchronization Key Points</div>
+      <ul class="rev-points">
+        <li>synchronized keyword on method/block</li>
+        <li>wait() – releases lock, waits</li>
+        <li>notify() – wakes one thread</li>
+        <li>notifyAll() – wakes all threads</li>
+        <li>All called from synchronized context</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Cookie in Servlet</div>
+      <ul class="rev-points">
+        <li>Create: new Cookie("name","value")</li>
+        <li>Add: response.addCookie(cookie)</li>
+        <li>Get: request.getCookies() → array</li>
+        <li>getName() and getValue() to read</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">doGet vs doPost — Key Diff</div>
+      <ul class="rev-points">
+        <li>GET: URL visible, limited size, bookmarkable</li>
+        <li>POST: Hidden, no size limit, secure</li>
+        <li>GET: for reading; POST: for writing</li>
+      </ul>
+    </div>
+    <div class="rev-item">
+      <div class="rev-topic">Implicit Objects in JSP (9)</div>
+      <ul class="rev-points">
+        <li>request, response, out, session</li>
+        <li>application, config, pageContext</li>
+        <li>page, exception</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 9: SKIP LIST ===== -->
+<div class="section" id="skip">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <div class="section-title">🚫 What to Skip If Time is Less</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title" style="color:var(--muted)">Low Priority / Skip These Topics</div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>Stack and Vector classes (Ch.1)</strong> — Rarely asked, covered by ArrayList/LinkedList questions</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>Benefits of Collection Framework (detailed)</strong> — Very low-mark topic. Just remember 3 lines.</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>Thread Scheduling algorithms details (Ch.2)</strong> — Know only basics, not deep internals</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>JDBC Type 1 & Type 2 drivers (Ch.3)</strong> — Just mention them in table, focus on Type 4</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>ORM/JPA integration in JDBC chapter</strong> — Advanced, not in syllabus heavily</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>JSP Actions (jsp:include, jsp:forward, jsp:useBean)</strong> — Only if time allows, low frequency</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>JSP Custom Tags and JSTL</strong> — Rarely asked, very complex. Skip entirely.</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>Spring WebSocket module details</strong> — Only know the name, no deep explanation needed</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>Spring AOP Pointcut/Advice types in detail</strong> — Know AOP concept in one line only</div></div>
+    <div class="skip-item"><span class="skip-x">SKIP</span><div class="skip-text"><strong>All Additional Programs not listed here</strong> — Focus on the 8 programs in this guide</div></div>
+  </div>
+
+  <div class="card" style="border:1px solid rgba(85,239,196,0.3);background:rgba(85,239,196,0.04)">
+    <div class="card-title tg">✅ Don't Skip These (Even if Time is Short)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+      <span class="tag tag-hot">Servlet Life Cycle</span>
+      <span class="tag tag-hot">JSP Life Cycle</span>
+      <span class="tag tag-hot">doGet vs doPost</span>
+      <span class="tag tag-hot">JSP Scripting Elements</span>
+      <span class="tag tag-hot">JDBC 5 Steps</span>
+      <span class="tag tag-hot">Thread Life Cycle</span>
+      <span class="tag tag-hot">Two ways to create Thread</span>
+      <span class="tag tag-hot">Spring DI Types</span>
+      <span class="tag tag-hot">Collection Hierarchy</span>
+      <span class="tag tag-hot">Session Tracking</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 10: EXPECTED QUESTIONS ===== -->
+<div class="section" id="expected">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <div class="section-title">🎯 Expected Questions for Tomorrow's Exam</div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;border:1px solid rgba(255,107,53,0.3)">
+    <div class="card-title">⭐ VERY HIGH PROBABILITY (Prepare These First!)</div>
+  </div>
+
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain Servlet Life Cycle with diagram. [5M]</strong>
+      <span>Ch.4 · Appeared in EVERY year's question paper. 100% expected.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Differentiate doGet() and doPost() methods. [4–5M]</strong>
+      <span>Ch.4 · Appeared 6 times across different years. Very likely.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain JSP Life Cycle. [4–5M]</strong>
+      <span>Ch.4 · Repeated every year. Prepare 5-step answer.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain JDBC Architecture with types of drivers. [5M]</strong>
+      <span>Ch.3 · Most important JDBC question. Appeared 5+ times.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Write a JDBC program to insert and display student/employee records. [5M]</strong>
+      <span>Ch.3 · A programming question appears every year. Prepare the template.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain Thread Life Cycle. [4–5M]</strong>
+      <span>Ch.2 · Diagram + 5 states. 100% comes every exam.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain scripting elements in JSP with syntax and example. [4–5M]</strong>
+      <span>Ch.4 · Appeared 5 times. All 4 types with syntax is the answer.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐</div>
+    <div class="exp-text">
+      <strong>Two ways to create Thread in Java with example. [4–5M]</strong>
+      <span>Ch.2 · Always asked. Know both Thread class and Runnable code.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐</div>
+    <div class="exp-text">
+      <strong>What is Cookie? Explain with example in Servlet. [4M]</strong>
+      <span>Ch.4 · Appeared 4+ times. Create, add, get cookies code.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain Map interface with implementations. [4M]</strong>
+      <span>Ch.1 · Very frequently asked. HashMap, TreeMap, Hashtable.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain Spring Architecture / Modules. [5M]</strong>
+      <span>Ch.5 · Main Spring question. 7 module groups diagram.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐⭐</div>
+    <div class="exp-text">
+      <strong>Explain Dependency Injection in Spring. [4M]</strong>
+      <span>Ch.5 · Constructor vs Setter DI with example.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐</div>
+    <div class="exp-text">
+      <strong>Explain Synchronization with example. [5M]</strong>
+      <span>Ch.2 · synchronized keyword + wait/notify code.</span>
+    </div>
+  </div>
+  <div class="exp-q">
+    <div class="exp-star">⭐</div>
+    <div class="exp-text">
+      <strong>Write a Servlet program that accepts user info and displays it. [5M]</strong>
+      <span>Ch.4 · A basic Servlet program is expected every year.</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px;border:1px solid rgba(255,230,109,0.3);background:rgba(255,230,109,0.04)">
+    <div class="card-title t3">💡 Pro Tips for Exam</div>
+    <ul class="bullet-list">
+      <li>Always draw diagrams — Thread Life Cycle, Servlet Life Cycle, JDBC Architecture, Spring Modules. Diagrams = extra marks!</li>
+      <li>For 1-mark questions: Answer in exactly 1–2 lines. Don't write paragraphs.</li>
+      <li>For 5-mark programs: Always include import statements and class declaration. Even if logic is wrong, structure gives marks.</li>
+      <li>For differences: Use table format — examiners love it.</li>
+      <li>Start with questions you know best. Don't get stuck.</li>
+      <li>For any JSP scripting question: Write ALL 4 types with syntax even if only one is asked.</li>
+      <li>In JDBC programs: Comment each step (Load Driver, Get Connection, etc.) — shows you know the architecture.</li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<div class="footer">
+  <p>CS 365 · Advanced Java · TYBSc CS Sem VI &nbsp;|&nbsp; <span>All 5 Chapters Covered</span></p>
+  <p style="margin-top:6px">Good luck tomorrow! You've got this. 🚀</p>
+</div>
+
+</body>
+</html>
